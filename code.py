@@ -16,6 +16,7 @@ class Card:
             self.value = 10
         if self.id == 1:
             self.name = "Ace of " + self.suit
+            self.value = 11
     
     def __repr__(self):
         return self.name
@@ -42,16 +43,24 @@ current_deck = shuffle_cards()
 
 user_hand = []
 
-def deal_card():
-    dealt_card = current_deck.pop(0)
+def deal_card(hand, deck):
+    dealt_card = deck.pop(0)
     print("You got",  dealt_card)
-    user_hand.append(dealt_card)
+    hand.append(dealt_card)
 
-def card_count():
+def card_count(hand):
     count_card_list = []
-    for card in user_hand:
+    for card in hand:
         count_card_list.append(card.value)
     count_card_sum = sum(count_card_list)
+    while 11 in count_card_list:
+        if count_card_sum > 21:
+            for i in range(len(count_card_list)):
+                if count_card_list[i] == 11:
+                    count_card_list[i] = 1
+                    count_card_sum = sum(count_card_list)
+        else:
+            break
     print("Current sum: ", count_card_sum)
     return count_card_sum
 
@@ -65,9 +74,9 @@ while game_running:
     else:
         user_input = input("Type \'Hit me\' to be dealt a card or \'Hold\' to hold.")
     if user_input.lower() == "hit me":
-        deal_card()
+        deal_card(user_hand, current_deck)
         print("You have: ", user_hand)
-        current_hand_sum = card_count()
+        current_hand_sum = card_count(user_hand)
         if current_hand_sum == 21:
             print("Blackjack!")
             print("You win! Thank you for playing. Goodbye.")
