@@ -59,6 +59,7 @@ def card_count(hand):
                 if count_card_list[i] == 11:
                     count_card_list[i] = 1
                     count_card_sum = sum(count_card_list)
+                    break
         else:
             break
     print("Current sum: ", count_card_sum)
